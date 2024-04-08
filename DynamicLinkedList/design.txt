@@ -1,0 +1,82 @@
+List <STRUCTURE>
+    head <ListNode Pointer> This might be unnecessary...
+
+ListNode <STRUCTURE>
+    id <int>
+    name <string>
+    next <ListNode Pointer>
+
+list_create()
+START
+
+END
+
+list_add_node()
+START
+
+END
+
+list_delete_node()
+START
+
+END
+
+list_find_node()
+START
+
+END
+
+list_purge()
+START
+
+END
+
+list_print()
+START
+
+END
+
+node_modify()
+START
+
+END
+
+node_print()
+START
+
+END
+
+main()
+START
+
+    Loop
+    START
+        Declare a variable for choice
+        Display A: Create list
+        Display B: Add node to list
+        Display C: Delete not from list
+        Display D: Modify node in list
+        Display E: Search for node
+        Display F: Print List
+        Display G: Purge list
+
+        switch(choice)
+        START
+            case: 'A'
+                Call list_create()
+            case: 'B'
+                call list_add_node()
+            case: 'C'
+                call list_delete_node()
+            case: 'D'
+                call list_modify_node()
+            case: 'E'
+                call list_find_node()
+            case: 'F'
+                call list_print()
+            case: 'G'
+                call list_purge()
+        END
+    END
+
+END
