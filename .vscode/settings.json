@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "xlocale": "cpp",
+        "xlocnum": "cpp",
+        "system_error": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "xmemory": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "iostream": "cpp"
+    }
+}

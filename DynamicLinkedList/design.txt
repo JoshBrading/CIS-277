@@ -1,17 +1,24 @@
 List <STRUCTURE>
+START   
     head <ListNode Pointer> This might be unnecessary...
+END
 
 ListNode <STRUCTURE>
+START
     id <int>
     name <string>
+    
     next <ListNode Pointer>
+END
 
 list_create(): returns a pointer to a List
 START
-    return new List
+    Declare a pointer to a List: list
+    Initialize list->head to null
+    return the list
 END
 
-list_add_node( list: a pointer to a List, node: a pointer to a ListNode )
+list_add_node( list: a pointer to a List, id: int, name: string )
 START
     if list is null
     START
@@ -19,9 +26,13 @@ START
         return
     END
 
+    Declare a pointer to ListNode: newNode;
+    newNode->id = id;
+    newNode->name = name;
+
     if list->head is null
     START
-        list->head = node
+        list->head = newNode
         return
     END
 
@@ -32,16 +43,17 @@ START
     START
         if curr is null
         START
-            prev->next = node
+            prev->next = newNode
             break
         END
 
-        if prev->id < node->id && curr->id > node->id
+        if prev->id < newNode->id && curr->id > newNode->id
         START
-            prev->next = node
-            node->next = curr
+            prev->next = newNode
+            newNode->next = curr
             break
         END
+
         prev = curr
         curr = curr->next
     END
@@ -52,7 +64,7 @@ START
     if list is null
     START
         Display "List does not exist"
-        return null
+        return
     END
     Declare and initialize pointer curr to list->head
     Declare and initialize pointer prev to list->head
@@ -60,7 +72,7 @@ START
     if curr is null
     START
         Display "List is empty"
-        return null
+        return
     END
 
     while curr is not null
@@ -142,8 +154,6 @@ START
         Display "ID: tmp->id, NAME: tmp->name"
         tmp = tmp->next
     END
-    Display "List purged"
-
 END
 
 node_modify( list: a pointer to a List, id: int )
