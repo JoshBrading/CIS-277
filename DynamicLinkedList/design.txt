@@ -6,29 +6,120 @@ ListNode <STRUCTURE>
     name <string>
     next <ListNode Pointer>
 
-list_create()
+list_create(): returns a pointer to a List
 START
-
+    return new List
 END
 
-list_add_node()
+list_add_node( list: a pointer to a List, node: a pointer to a ListNode )
 START
+    if list is null
+    START
+        Display "List does not exist"
+        return
+    END
 
+    if list->head is null
+    START
+        list->head = node
+        return
+    END
+
+    Declare and initialize ListNode pointer curr to list->head
+    Declare and initialize ListNode pointer prev to list->head
+
+    while
+    START
+        if curr is null
+        START
+            prev->next = node
+            break
+        END
+
+        if prev->id < node->id && curr->id > node->id
+        START
+            prev->next = node
+            node->next = curr
+            break
+        END
+        prev = curr
+        curr = curr->next
+    END
 END
 
-list_delete_node()
+list_delete_node( list: a pointer to a List, id: int )
 START
+    if list is null
+    START
+        Display "List does not exist"
+        return null
+    END
+    Declare and initialize pointer curr to list->head
+    Declare and initialize pointer prev to list->head
 
+    if curr is null
+    START
+        Display "List is empty"
+        return null
+    END
+
+    while curr is not null
+    START
+        if curr->id == id
+        START
+            prev->next = curr->next
+            delete curr
+            Display "Node with ID id deleted"
+            return
+        END
+    END
+    Display "Node with ID id not found"
 END
 
-list_find_node()
+list_find_node( list: a pointer to a List, id: int ): returns pointer to a ListNode
 START
+    if list is null
+    START
+        Display "List does not exist"
+        return null
+    END
 
+    Declare and initialize ListNode pointer tmp to list->head
+    if tmp is null
+    START
+        Display "List is empty"
+        return null
+    END
+
+    while tmp is not null
+    START
+        if tmp->id == id
+            return tmp
+        tmp = tmp->next
+    END
+
+    Display "Node with ID id not found"
+    return null
 END
 
-list_purge()
+list_purge( list: a pointer to a List )
 START
+    if list is null
+    START
+        Display "List does not exist"
+        return null
+    END
+    
+    Declare and initialize pointer curr to list->head
+    Declare and initialize pointer prev to list->head
 
+    while curr is not null
+    START
+        curr = curr->next
+        delete prev
+        prev->curr
+    END
+    Display "List purged"
 END
 
 list_print()
@@ -41,9 +132,14 @@ START
 
 END
 
-node_print()
+node_print( list: a pointer to a List, id: int )
 START
-
+    Declare a ListNode pointer: node
+    set node = call list_find_node( list, id )
+    if node is not null
+    START
+        Display "ID: node->id, NAME: node->name"
+    END
 END
 
 main()
@@ -52,13 +148,13 @@ START
     Loop
     START
         Declare a variable for choice
-        Display A: Create list
-        Display B: Add node to list
-        Display C: Delete not from list
-        Display D: Modify node in list
-        Display E: Search for node
-        Display F: Print List
-        Display G: Purge list
+        Display "A: Create list"
+        Display "B: Add node to list"
+        Display "C: Delete not from list"
+        Display "D: Modify node in list"
+        Display "E: Search for node"
+        Display "F: Print List"
+        Display "G: Purge list"
 
         switch(choice)
         START
