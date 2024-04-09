@@ -122,14 +122,39 @@ START
     Display "List purged"
 END
 
-list_print()
+list_print( list: a pointer to a List, id: int )
 START
+    if list is null
+    START
+        Display "List does not exist"
+        return
+    END
+
+    Declare and initialize ListNode pointer tmp to list->head
+    if tmp is null
+    START
+        Display "List is empty"
+        return
+    END
+
+    while tmp is not null
+    START
+        Display "ID: tmp->id, NAME: tmp->name"
+        tmp = tmp->next
+    END
+    Display "List purged"
 
 END
 
-node_modify()
+node_modify( list: a pointer to a List, id: int )
 START
-
+    Declare a ListNode pointer: node
+    set node = call list_find_node( list, id )
+    if node is not null
+    START
+        Display "Enter new name: "
+        set node->name to input
+    END
 END
 
 node_print( list: a pointer to a List, id: int )
@@ -173,6 +198,7 @@ START
             case: 'G'
                 call list_purge()
         END
+        Display list with list_print()
     END
 
 END
