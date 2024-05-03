@@ -3,7 +3,8 @@
 #include <string>
 using namespace std;
 
-struct ListNode{
+struct ListNode
+{
     int id;
     string name;
     float gpa;
@@ -11,7 +12,8 @@ struct ListNode{
     ListNode* next;
 };
 
-struct List{
+struct List
+{
     ListNode* head;
 };
 
@@ -271,7 +273,7 @@ int main()
         char choice;
         cout << "\nA: Create list\n";
         cout << "B: Add node to list\n";
-        cout << "C: Delete not from list\n";
+        cout << "C: Delete node from list\n";
         cout << "D: Modify node in list\n";
         cout << "E: Search for node\n";
         cout << "F: Print List\n";

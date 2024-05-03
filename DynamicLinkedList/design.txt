@@ -1,24 +1,32 @@
-List <STRUCTURE>
-START   
-    head <ListNode Pointer> This might be unnecessary...
-END
-
 ListNode <STRUCTURE>
 START
     id <int>
     name <string>
+    gpa <float>
     
     next <ListNode Pointer>
 END
 
-list_create(): returns a pointer to a List
-START
-    Declare a pointer to a List: list
-    Initialize list->head to null
-    return the list
+List <STRUCTURE>
+START   
+    head <ListNode Pointer>
 END
 
-list_add_node( list: a pointer to a List, id: int, name: string )
+list_create( list: a pointer to a List reference )
+START
+    If list is null
+    START
+        Set list = to a new list object
+        Initialize list->head to null
+        Display "List created"
+    END
+    else
+    START
+        Dispaly "List already exists"
+    END
+END
+
+list_add_node( list: a pointer to a List )
 START
     if list is null
     START
@@ -26,9 +34,15 @@ START
         return
     END
 
-    Declare a pointer to ListNode: newNode;
-    newNode->id = id;
-    newNode->name = name;
+    Declare a pointer to ListNode: newNode and initialize it to a new ListNode object
+    Initialize newNode->next to null 
+    Display "Enter ID: "
+    set newNode->id = input
+    Display "Enter GPA: "
+    set newNode->gpa = input
+    Display "Enter Name: "
+    set newNode->name = input
+
 
     if list->head is null
     START
@@ -39,11 +53,18 @@ START
     Declare and initialize ListNode pointer curr to list->head
     Declare and initialize ListNode pointer prev to list->head
 
-    while
+    while( true )
     START
         if curr is null
         START
             prev->next = newNode
+            break
+        END
+
+        if curr->id == newNode->ID
+        START
+            Display "ID already exists in list"
+            delete newNode object
             break
         END
 
@@ -53,65 +74,165 @@ START
             newNode->next = curr
             break
         END
+        
+        if curr->id > newNode->id
+        START
+            newNode->next = curr
+            list->head = newNode
+            break
+        END
 
         prev = curr
         curr = curr->next
     END
 END
 
-list_delete_node( list: a pointer to a List, id: int )
+list_print_node( node: a pointer to a ListNode )
+START
+    if node is null
+        return
+    Display "ID: node->id   |   Name: node->name   |   GPA: node->gpa"
+END
+
+list_modify_node( list: a pointer to a List )
+START
+    if list is NULL 
+    START
+        Display "List does not exist"
+        return
+    END
+
+    if( list->head == NULL )
+    START
+        Display "List is empty"
+        return
+    END
+    
+    Declare an int: id
+    Declare a string: name
+    Declare a float: gpa
+    Declare and initialize a ListNode: node = list->head
+    
+    Display "Modify ID: "
+    Set id = input
+    while node is not NULL 
+    START
+        if node->id == id 
+            break
+        node = node->next
+    END
+
+    if node is NULL 
+    START
+        Display "ID does not exist"
+        return
+    END
+
+    Display "Enter new GPA: "
+    Set gpa = input
+    Display "Enter new name: "
+    Set name = input
+
+
+    Display "Before"
+    call list_print_node(node)
+    node->name = name
+    node->gpa = gpa
+    Display "After"
+    call list_print_node(node)
+END
+
+list_delete_node( list: a pointer to a List )
 START
     if list is null
     START
         Display "List does not exist"
         return
     END
-    Declare and initialize pointer curr to list->head
-    Declare and initialize pointer prev to list->head
 
-    if curr is null
+    if list->head is null
     START
         Display "List is empty"
         return
     END
+
+    Declare int: id
+    Declare and initialize pointer curr to list->head
+    Declare and initialize pointer prev to null
+
+    Display "Delete ID: "
+    set id = input
 
     while curr is not null
     START
         if curr->id == id
         START
-            prev->next = curr->next
+            if prev is null
+                list->head = curr->head
+            else
+                prev->next = curr->next
             delete curr
             Display "Node with ID id deleted"
             return
         END
+        prev = curr
+        curr = curr->next
     END
     Display "Node with ID id not found"
 END
 
-list_find_node( list: a pointer to a List, id: int ): returns pointer to a ListNode
+list_print( list: a pointer to a List )
 START
     if list is null
     START
         Display "List does not exist"
-        return null
+        return
     END
 
-    Declare and initialize ListNode pointer tmp to list->head
-    if tmp is null
+    Declare and initialize ListNode pointer node to list->head
+    if node is null
     START
         Display "List is empty"
-        return null
+        return
     END
 
-    while tmp is not null
+    while node is not null
     START
-        if tmp->id == id
-            return tmp
-        tmp = tmp->next
+        call list_print_node(node)
+        node = node->next
+    END
+END
+
+list_find_node( list: a pointer to a List )
+START
+    if list is null
+    START
+        Display "List does not exist"
+        return
     END
 
+    if list->head is null
+    START
+        Display "List is empty"
+        return
+    END
+
+    Declare int: id
+    Declare and initialize ListNode pointer curr to list->head
+
+    Display "Find ID: "
+    set id = input
+
+    while curr is not null
+    START
+        if curr->id == id
+        START
+            call list_print_node(curr)
+            return
+        END
+        curr = curr->next
+    END
     Display "Node with ID id not found"
-    return null
 END
 
 list_purge( list: a pointer to a List )
@@ -122,65 +243,27 @@ START
         return null
     END
     
-    Declare and initialize pointer curr to list->head
-    Declare and initialize pointer prev to list->head
-
-    while curr is not null
-    START
-        curr = curr->next
-        delete prev
-        prev->curr
-    END
-    Display "List purged"
-END
-
-list_print( list: a pointer to a List, id: int )
-START
-    if list is null
-    START
-        Display "List does not exist"
-        return
-    END
-
-    Declare and initialize ListNode pointer tmp to list->head
-    if tmp is null
+    if list->head is null
     START
         Display "List is empty"
         return
     END
 
-    while tmp is not null
+    Declare and initialize pointer curr to list->head
+    while curr is not null
     START
-        Display "ID: tmp->id, NAME: tmp->name"
-        tmp = tmp->next
+        Declare and initialize ListNode pointer next to curr->next
+        delete curr
+        curr = next
     END
-END
-
-node_modify( list: a pointer to a List, id: int )
-START
-    Declare a ListNode pointer: node
-    set node = call list_find_node( list, id )
-    if node is not null
-    START
-        Display "Enter new name: "
-        set node->name to input
-    END
-END
-
-node_print( list: a pointer to a List, id: int )
-START
-    Declare a ListNode pointer: node
-    set node = call list_find_node( list, id )
-    if node is not null
-    START
-        Display "ID: node->id, NAME: node->name"
-    END
+    list->head = null
+    Display "List purged"
 END
 
 main()
 START
-
-    Loop
+    Declare and initialize a List pointer to null
+    while true
     START
         Declare a variable for choice
         Display "A: Create list"
@@ -190,25 +273,30 @@ START
         Display "E: Search for node"
         Display "F: Print List"
         Display "G: Purge list"
-
+        set choice = input
         switch(choice)
         START
             case: 'A'
-                Call list_create()
+                Call list_create( list )
+                break
             case: 'B'
-                call list_add_node()
+                call list_add_node( list )
+                break
             case: 'C'
-                call list_delete_node()
+                call list_delete_node( list )
+                break
             case: 'D'
-                call list_modify_node()
+                call list_modify_node( list )
+                break
             case: 'E'
-                call list_find_node()
+                call list_find_node( list )
+                break
             case: 'F'
-                call list_print()
+                call list_print( list )
+                break
             case: 'G'
-                call list_purge()
+                call list_purge( list )
+                break
         END
-        Display list with list_print()
     END
-
 END
