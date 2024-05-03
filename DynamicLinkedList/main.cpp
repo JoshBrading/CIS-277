@@ -1,11 +1,13 @@
 #include <iostream>
-
+#include <list>
+#include <string>
 using namespace std;
 
 struct ListNode{
     int id;
     string name;
-
+    float gpa;
+    
     ListNode* next;
 };
 
@@ -13,12 +15,18 @@ struct List{
     ListNode* head;
 };
 
-List* list_create() 
+void list_create( List* &list ) 
 {
-    List* list = new List;
-    list->head = NULL;
-    cout << "List created\n";
-    return list;
+    if( list == NULL )
+    {
+        list = new List;
+        list->head = NULL;
+        cout << "List created\n";
+    }
+    else
+    {
+        cout << "List already exists\n";
+    }
 }
 
 void list_add_node( List* list )
@@ -33,8 +41,11 @@ void list_add_node( List* list )
     newNode->next = NULL;
     cout << "Enter ID: ";
     cin >> newNode->id;
+    cout << "Enter GPA: ";
+    cin >> newNode->gpa;
     cout << "Enter Name: ";
-    cin >> newNode->name;
+    cin.ignore();
+    getline(cin, newNode->name);
 
     if( list->head == NULL )
     {
@@ -53,45 +64,124 @@ void list_add_node( List* list )
             break;
         }
 
+        if( curr->id == newNode->id )
+        {
+            cout << "ID already exists in list\n";
+            delete newNode;
+            break;
+        }
+
         if( prev->id < newNode->id && curr->id > newNode->id )
         {
             prev->next = newNode;
             newNode->next = curr;
             break;
         }
-
+        
+        if( curr->id > newNode->id )
+        {
+            newNode->next = curr;
+            list->head = newNode;
+            break;
+        }
+        
         prev = curr;
         curr = curr->next;
     }
 }
 
-void list_delete_node( List* list, int id )
+void list_print_node( ListNode* node )
+{
+    if( node == NULL )
+        return;
+    cout << "ID: " << node->id << "  |  Name: " << node->name << "  |  GPA: " << node->gpa << "\n";
+}
+
+void list_modify_node( List* list )
 {
     if( list == NULL )
     {
         cout << "List does not exist\n";
         return;
     }
-    ListNode* curr = list->head;
-    ListNode* prev = list->head;
 
-    if( curr == NULL )
+    if( list->head == NULL )
     {
         cout << "List is empty\n";
         return;
     }
+    
+    int id;
+    string name;
+    float gpa;
+    ListNode* node = list->head;
+    
+    cout << "Modify ID: ";
+    cin >> id;
+    while( node != NULL )
+    {
+        if( node->id == id )
+            break;
+        node = node->next;
+    }
+
+    if( node == NULL )
+    {
+        cout << "ID does not exist\n";
+        return;
+    }
+
+    cout << "Enter new GPA: ";
+    cin >> gpa;
+    cout << "Enter new name: ";
+    cin.ignore();
+    getline(cin, name);
+
+    cout << "Before\n";
+    list_print_node(node);
+    node->name = name;
+    node->gpa = gpa;
+    cout << "After\n";
+    list_print_node(node);
+}
+
+void list_delete_node( List* list )
+{
+    if( list == NULL )
+    {
+        cout << "List does not exist\n";
+        return;
+    }
+
+    if( list->head == NULL )
+    {
+        cout << "List is empty\n";
+        return;
+    }
+    
+    int id;
+    ListNode* curr = list->head;
+    ListNode* prev = NULL;
+    
+    cout << "Delete ID: ";
+    cin >> id;
 
     while( curr != NULL )
     {
         if( curr->id == id )
         {
-            prev->next = curr->next;
+            if( prev == NULL )
+                list->head = curr->next;
+            else
+                prev->next = curr->next;
             delete curr;
-            cout << "Node with ID: " << id << " deleted\n";
+            cout << "ID: " << id << " deleted\n";
             return;
         }
+        prev = curr;
+        curr = curr->next;
     }
-    cout << "Node with ID: " << id << " not found\n";
+    cout << "ID: " << id << " not found\n";
 }
 
 void list_print( List* list )
@@ -102,26 +192,80 @@ void list_print( List* list )
         return;
     }
 
-    ListNode* tmp = list->head;
-    if( tmp == NULL )
+    ListNode* node = list->head;
+    if( node == NULL )
     {
         cout << "List is empty\n";
         return;
     }
 
-    while( tmp != NULL )
+    while( node != NULL )
     {
-        cout << "ID: " << tmp->id << ",  NAME: " << tmp->name << "\n";
-        tmp = tmp->next;
+        list_print_node(node);
+        node = node->next;
     }
 }
 
-//MARK: main
-main()
+void list_find_node( List* list )
+{
+    if( list == NULL )
+    {
+        cout << "List does not exist\n";
+        return;
+    }
+
+    if( list->head == NULL )
+    {
+        cout << "List is empty\n";
+        return;
+    }
+    
+    int id;
+    ListNode* curr = list->head;
+
+    cout << "Find ID: ";
+    cin >> id;
+    
+    while( curr != NULL )
+    {
+        if( curr->id == id )
+        {
+            list_print_node(curr);
+            return;
+        }
+        curr = curr->next;
+    }
+    cout << "ID: " << id << " not found\n";
+}
+
+void list_purge(List *list)
+{
+    if( list == NULL )
+    {
+        cout << "List does not exist\n";
+        return;
+    }
+
+    if( list->head == NULL )
+    {
+        cout << "List is empty\n";
+        return;
+    }
+
+    ListNode* curr = list->head;
+    while( curr != NULL )
+    {
+        ListNode* next = curr->next;
+        delete curr;
+        curr = next;
+    }
+    list->head = NULL;
+    cout << "List purged\n";
+}
+
+int main()
 {
     List* list = NULL;
-    int id;
-    string name;
     while(true)
     {
         char choice;
@@ -136,18 +280,26 @@ main()
         switch(toupper(choice))
         {
             case 'A':
-                list = list_create();
+                list_create( list );
                 break;
             case 'B':
                 list_add_node( list );
                 break;
             case 'C':
-                list_delete_node( list, id );
+                list_delete_node( list );
+                break;
+            case 'D':
+                list_modify_node( list );
+                break;
+            case 'E':
+                list_find_node( list );
                 break;
             case 'F':
-                list_print(list);
+                list_print( list );
+                break;
+            case 'G':
+                list_purge( list );
                 break;
         }
     }
-
 }
